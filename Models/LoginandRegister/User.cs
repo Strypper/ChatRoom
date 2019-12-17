@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Lobby.Models.SignalR;
 using Microsoft.AspNetCore.Identity;
 
 namespace Lobby.Models
 {
     public class User : IdentityUser
     {
+        public static object Claims { get; internal set; }
         [NotMapped]
         public string Pass { get; set; }
         public string Role { get; set; }
@@ -29,6 +32,7 @@ namespace Lobby.Models
         [Range(18, 60, ErrorMessage = "Your Age Must Older Than 18")]
         //[Column(TypeName = "tinyint")]
         public int Age { get; set; }
+        public ICollection<UserRoomReference> UserChat { get; set; }
 
     }
 }

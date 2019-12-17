@@ -35,6 +35,17 @@ namespace Lobby.Controllers
             return Ok(chat);
         }
         [HttpPost]
+        public async Task<IActionResult> JoinRoom(int id)
+        {
+            string userId = User.Claims.First(c =>c.Type == "UserID").Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            
+            //_ctx.Users.Add();
+
+            await _ctx.SaveChangesAsync();
+            return Ok();
+        }
+        [HttpPost]
         public async Task<IActionResult> CreateMessage([FromBody]Message sendmess)
         {
             string userId = User.Claims.First(c =>c.Type == "UserID").Value;
