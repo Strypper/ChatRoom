@@ -20,7 +20,8 @@ namespace Lobby.Controllers
         private AppDbContext _ctx;
         private UserManager<User> _userManager;
         public LobbyController(AppDbContext ctx, UserManager<User> userManager) {_ctx = ctx; _userManager = userManager;}
-        //[AllowAnonymous]
+        [AllowAnonymous]
+        [HttpGet]
         public IEnumerable<Chat> AllRooms()
         {
             var rooms = _ctx.Chats;
@@ -45,22 +46,22 @@ namespace Lobby.Controllers
             await _ctx.SaveChangesAsync();
             return Ok();
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateMessage([FromBody]Message sendmess)
-        {
-            string userId = User.Claims.First(c =>c.Type == "UserID").Value;
-            var user = await _userManager.FindByIdAsync(userId);
-            var mess = new Message
-            {
-                ChatId = sendmess.ChatId,
-                Text = sendmess.Text,
-                Name = user.UserName,
-                TimeStamp = System.DateTime.Now
-            };
-            _ctx.Messages.Add(mess);
-            await _ctx.SaveChangesAsync();
-            return Ok(mess);
-        }
+        // [HttpPost]
+        // public async Task<IActionResult> CreateMessage([FromBody]Message sendmess)
+        // {
+        //     string userId = User.Claims.First(c =>c.Type == "UserID").Value;
+        //     var user = await _userManager.FindByIdAsync(userId);
+        //     var mess = new Message
+        //     {
+        //         ChatId = sendmess.ChatId,
+        //         Text = sendmess.Text,
+        //         Name = user.UserName,
+        //         TimeStamp = System.DateTime.Now
+        //     };
+        //     _ctx.Messages.Add(mess);
+        //     await _ctx.SaveChangesAsync();
+        //     return Ok(mess);
+        // }
         [HttpPost]
         public async Task<IActionResult> CreateRoom([FromBody]Chat chat)
         {
